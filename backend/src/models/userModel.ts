@@ -49,16 +49,6 @@ const userSchema = new mongoose.Schema(
       phone: { type: String, default: "" },
       address: { type: String, default: "" },
     },
-
-    // Optional settings
-    template: {
-      type: String,
-      default: "default", // Template/theme selection
-    },
-    customDomain: {
-      type: String,
-      default: "",
-    },
   },
   { timestamps: true }
 );

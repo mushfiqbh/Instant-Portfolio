@@ -2,14 +2,16 @@
 
 import { LandingPage } from "@/components/LandingPage";
 import { useAuth } from "@/context/AuthContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { user } = useAuth();
+  const router = useRouter();
 
   if (!user) {
     return <LandingPage />;
   }
 
-  redirect("/dashboard");
+  router.push("/dashboard");
+  return null;
 }
