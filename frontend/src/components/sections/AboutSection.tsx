@@ -69,16 +69,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-6xl mx-auto px-4">
         {personalInfo.email && (
           <a
             href={`mailto:${personalInfo.email}`}
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Mail className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-red-600 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-red-600 transition-colors duration-200 truncate ml-2 sm:ml-3">
               {personalInfo.email}
             </span>
           </a>
@@ -87,23 +87,23 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         {personalInfo.contactInfo.phone && (
           <a
             href={`tel:${personalInfo.contactInfo.phone}`}
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Phone className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-green-600 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-green-600 transition-colors duration-200 truncate ml-2 sm:ml-3">
               {personalInfo.contactInfo.phone}
             </span>
           </a>
         )}
 
         {personalInfo.contactInfo.address && (
-          <div className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50">
-            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
-              <MapPin className="w-6 h-6 text-white" />
+          <div className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm border border-white/70">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <span className="text-gray-700 font-medium">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium ml-2 sm:ml-3 truncate">
               {personalInfo.contactInfo.address}
             </span>
           </div>
@@ -114,12 +114,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             href={personalInfo.socialLinks.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Globe className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-purple-600 transition-colors duration-200 ml-2 sm:ml-3">
               Resume
             </span>
           </a>
@@ -130,12 +130,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             href={personalInfo.socialLinks.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Linkedin className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-blue-600 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-blue-600 transition-colors duration-200 ml-2 sm:ml-3">
               LinkedIn
             </span>
           </a>
@@ -146,12 +146,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             href={personalInfo.socialLinks.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Github className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-gray-700 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-gray-800 transition-colors duration-200 ml-2 sm:ml-3">
               GitHub
             </span>
           </a>
@@ -162,12 +162,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             href={personalInfo.socialLinks.twitter}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center space-x-4 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
+            className="group flex items-center p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-white/70 hover:border-indigo-100 active:translate-y-0 active:shadow-sm"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-sky-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-200 group-active:scale-95">
               <Globe className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-sky-600 transition-colors duration-300">
+            <span className="text-xs sm:text-sm text-gray-700 font-medium group-hover:text-sky-600 transition-colors duration-200 ml-2 sm:ml-3">
               Twitter
             </span>
           </a>

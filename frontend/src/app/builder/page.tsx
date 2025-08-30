@@ -54,6 +54,7 @@ const BuilderPage = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialLoad = useRef(true);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -389,7 +390,6 @@ const BuilderPage = () => {
             "projects",
             "skills",
             "education",
-            "contact",
           ],
           enabledSections: [
             "about",
@@ -397,7 +397,6 @@ const BuilderPage = () => {
             "projects",
             "skills",
             "education",
-            "contact",
           ],
         };
         setPortfolioData(defaultData);
@@ -540,25 +539,69 @@ const BuilderPage = () => {
         )}
 
         {/* Main Content */}
-        <div className="flex flex-col lg:flex-row h-[calc(100vh-4rem)]">
-          {/* Editor Panel */}
-          <div className="w-full lg:w-1/2 bg-white border-r border-gray-200 lg:border-r overflow-hidden">
-            <PortfolioBuilder
-              portfolioData={portfolioData}
-              onUpdateData={handleUpdateData}
-              activeSection={activeSection}
-              onSectionChange={setActiveSection}
-            />
+        {/* Main Content */}
+        <div className="h-[calc(100vh-4rem)]">
+          {/* Mobile: Toggle views */}
+          <div className="block lg:hidden h-full">
+            {showPreview ? (
+              <PortfolioPreview
+                portfolioData={portfolioData}
+                theme={theme}
+                activeSection={activeSection}
+              />
+            ) : (
+              <PortfolioBuilder
+                portfolioData={portfolioData}
+                onUpdateData={handleUpdateData}
+                activeSection={activeSection}
+                onSectionChange={setActiveSection}
+              />
+            )}
           </div>
 
-          <div className="w-full lg:w-1/2 bg-gray-50 overflow-y-auto order-first lg:order-last">
-            <PortfolioPreview
-              portfolioData={portfolioData}
-              theme={theme}
-              activeSection={activeSection}
-            />
+          {/* Desktop: Side by side */}
+          <div className="hidden lg:flex h-full">
+            <div className="w-1/2 bg-white border-r border-gray-200 overflow-y-auto">
+              <PortfolioBuilder
+                portfolioData={portfolioData}
+                onUpdateData={handleUpdateData}
+                activeSection={activeSection}
+                onSectionChange={setActiveSection}
+              />
+            </div>
+            <div className="w-1/2 bg-gray-50 overflow-y-auto">
+              <PortfolioPreview
+                portfolioData={portfolioData}
+                theme={theme}
+                activeSection={activeSection}
+              />
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Toggle Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-blue-200 border-t border-gray-200 flex justify-around py-2 shadow-lg">
+        <button
+          onClick={() => setShowPreview(false)}
+          className={`flex-1 py-2 text-sm font-medium ${
+            !showPreview
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-500"
+          }`}
+        >
+          Builder
+        </button>
+        <button
+          onClick={() => setShowPreview(true)}
+          className={`flex-1 py-2 text-sm font-medium ${
+            showPreview
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-500"
+          }`}
+        >
+          Preview
+        </button>
       </div>
     </ProtectedRoute>
   );

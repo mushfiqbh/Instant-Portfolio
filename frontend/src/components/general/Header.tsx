@@ -150,14 +150,6 @@ export default function Header() {
           </div>
         )}
       </div>
-
-      {/* Overlay for mobile menu */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-25 z-40 md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
     </header>
   );
 }
