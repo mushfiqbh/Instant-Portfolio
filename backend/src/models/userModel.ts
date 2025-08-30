@@ -25,19 +25,29 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Web Developer",
     },
+    slogan: {
+      type: String,
+      default: "Your catchy slogan here",
+    },
     bio: {
       type: String,
       default: "",
     },
     profileImage: {
-      type: String, // URL of uploaded image
+      type: String,
       default: "",
     },
     socialLinks: {
+      resume: { type: String, default: "" },
       github: { type: String, default: "" },
       linkedin: { type: String, default: "" },
       twitter: { type: String, default: "" },
-      portfolio: { type: String, default: "" },
+      facebook: { type: String, default: "" },
+      whatsapp: { type: String, default: "" },
+    },
+    contactInfo: {
+      phone: { type: String, default: "" },
+      address: { type: String, default: "" },
     },
 
     // Optional settings

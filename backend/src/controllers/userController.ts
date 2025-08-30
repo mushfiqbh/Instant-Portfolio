@@ -1,4 +1,4 @@
-import userModel from "../models/userModel";
+import User from "../models/userModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
@@ -30,7 +30,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await userModel.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res
         .status(404)
@@ -58,7 +58,7 @@ export const registerUser = async (req: Request, res: Response) => {
   const { name, email, password }: RequestBody = req.body as RequestBody;
 
   try {
-    if (await userModel.findOne({ email })) {
+    if (await User.findOne({ email })) {
       return res
         .status(409)
         .json({ success: false, message: "Email already registered" });
@@ -82,7 +82,7 @@ export const registerUser = async (req: Request, res: Response) => {
       await bcrypt.genSalt(10)
     );
 
-    const newUser = new userModel({ name, email, password: hashedPassword });
+    const newUser = new User({ name, email, password: hashedPassword });
     const user = await newUser.save();
     const token = createToken(user._id);
 
@@ -102,7 +102,7 @@ export const getUserProfile = async (
   const userId = req.userId;
 
   try {
-    const userInfo = await userModel.findById(userId, { password: 0 });
+    const userInfo = await User.findById(userId, { password: 0 });
     if (!userInfo) {
       return res
         .status(404)
@@ -126,14 +126,14 @@ export const updateUserProfile = async (
   const updateData: Partial<RequestBody> = req.body as Partial<RequestBody>;
 
   try {
-    const user = await userModel.findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
     }
 
-    await userModel.findByIdAndUpdate(userId, updateData, {
+    await User.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,
     });
@@ -154,14 +154,14 @@ export const deleteAccount = async (
   const userId = req.userId;
 
   try {
-    const user = await userModel.findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "Account not found" });
     }
 
-    await userModel.findByIdAndDelete(userId);
+    await User.findByIdAndDelete(userId);
     res.status(200).json({ success: true, message: "Account deleted" });
   } catch (error) {
     res
