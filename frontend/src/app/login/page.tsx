@@ -27,7 +27,7 @@ const AuthPage = () => {
     setError("");
     try {
       await login("anonymous@gmail.com", "anonymous");
-    } catch (err) {
+    } catch {
       setError("Failed to login anonymously. Please try again.");
       setLoading(false);
     }
@@ -159,7 +159,11 @@ const AuthPage = () => {
                 className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                 disabled={loading}
               >
-                {loading ? "Processing..." : activeTab === "login" ? "Sign in" : "Sign up"}
+                {loading
+                  ? "Processing..."
+                  : activeTab === "login"
+                  ? "Sign in"
+                  : "Sign up"}
               </button>
               {activeTab === "login" && (
                 <div className="relative">
@@ -167,7 +171,9 @@ const AuthPage = () => {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                    <span className="px-2 bg-white text-gray-500">
+                      Or continue with
+                    </span>
                   </div>
                 </div>
               )}
