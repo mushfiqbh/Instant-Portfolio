@@ -1,8 +1,15 @@
+"use client";
+
+import { LandingPage } from "@/components/LandingPage";
+import { useAuth } from "@/context/AuthContext";
+import { redirect } from "next/navigation";
+
 export default function Home() {
-  return (
-    <main>
-      <h1>Welcome to Instant Portfolio Builder</h1>
-      <p>Showcase your work and skills with a professional portfolio</p>
-    </main>
-  );
+  const { user } = useAuth();
+
+  if (!user) {
+    return <LandingPage />;
+  }
+
+  redirect("/dashboard");
 }
