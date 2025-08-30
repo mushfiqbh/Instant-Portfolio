@@ -539,8 +539,7 @@ const BuilderPage = () => {
         )}
 
         {/* Main Content */}
-        {/* Main Content */}
-        <div className="h-[calc(100vh-4rem)]">
+        <div className="">
           {/* Mobile: Toggle views */}
           <div className="block lg:hidden h-full">
             {showPreview ? (
