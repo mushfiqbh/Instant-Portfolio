@@ -408,35 +408,35 @@ const BuilderPage = () => {
         <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900">
                 Portfolio Builder
               </h1>
 
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <button
                   onClick={() => setShowThemeSelector(!showThemeSelector)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
                 >
                   <Palette className="w-4 h-4" />
-                  <span>Theme</span>
+                  <span className="hidden sm:inline">Theme</span>
                 </button>
 
                 <button
                   onClick={() => setShowPreview(!showPreview)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
                 >
                   {showPreview ? (
                     <EyeOff className="w-4 h-4" />
                   ) : (
                     <Eye className="w-4 h-4" />
                   )}
-                  <span>{showPreview ? "Hide" : "Show"} Preview</span>
+                  <span className="hidden sm:inline">{showPreview ? "Hide" : "Show"} Preview</span>
                 </button>
 
                 <button
                   onClick={savePortfolio}
                   disabled={saving}
-                  className="flex items-center space-x-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="flex items-center space-x-1 sm:space-x-2 px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm"
                 >
                   <Save className="w-4 h-4" />
                   <span>{saving ? "Saving..." : "Save"}</span>
@@ -454,9 +454,9 @@ const BuilderPage = () => {
         )}
 
         {/* Main Content */}
-        <div className="flex h-[calc(100vh-4rem)]">
+        <div className="flex flex-col lg:flex-row h-[calc(100vh-4rem)]">
           {/* Editor Panel */}
-          <div className="w-1/2 bg-white border-r border-gray-200 overflow-hidden">
+          <div className="w-full lg:w-1/2 bg-white border-r border-gray-200 lg:border-r overflow-hidden">
             <PortfolioBuilder
               portfolioData={portfolioData}
               onUpdateData={handleUpdateData}
@@ -467,7 +467,7 @@ const BuilderPage = () => {
 
           {/* Preview Panel */}
           {showPreview && (
-            <div className="w-1/2 bg-gray-50 overflow-y-auto">
+            <div className="w-full lg:w-1/2 bg-gray-50 overflow-y-auto order-first lg:order-last">
               <PortfolioPreview
                 portfolioData={portfolioData}
                 theme={theme}

@@ -93,7 +93,7 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
         <button
@@ -106,8 +106,8 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
       </div>
 
       <div className="space-y-6">
-        {projects.map((project) => (
-          <div key={project._id} className="bg-gray-50 p-4 rounded-lg space-y-4">
+        {projects.map((project, index) => (
+          <div key={index} className="bg-gray-50 p-4 rounded-lg space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <ExternalLink className="w-4 h-4 text-gray-600" />
@@ -156,7 +156,7 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Live URL

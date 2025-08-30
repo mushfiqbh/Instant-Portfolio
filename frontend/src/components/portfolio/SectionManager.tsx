@@ -48,11 +48,11 @@ export const SectionManager: React.FC<SectionManagerProps> = ({
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 p-4">
+    <div className="bg-white border-b border-gray-200 p-3 sm:p-4">
       <h3 className="text-sm font-semibold text-gray-900 mb-3">
         Portfolio Sections
       </h3>
-      <div className="space-y-2 flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-2">
         {sectionOrder.map((section, index) => (
           <div
             key={section}
@@ -60,17 +60,17 @@ export const SectionManager: React.FC<SectionManagerProps> = ({
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, index)}
-            className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+            className={`flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg border cursor-pointer transition-all duration-200 min-w-0 ${
               activeSection === section
                 ? "bg-blue-50 border-blue-200"
                 : "bg-gray-50 border-gray-200 hover:bg-gray-100"
             }`}
             onClick={() => onSectionChange(section)}
           >
-            <GripVertical className="w-4 h-4 text-gray-400 cursor-grab" />
+            <GripVertical className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 cursor-grab flex-shrink-0" />
 
             <span
-              className={`flex-1 text-sm font-medium ${
+              className={`flex-1 text-xs sm:text-sm font-medium truncate ${
                 enabledSections.includes(section)
                   ? "text-gray-900"
                   : "text-gray-400"
@@ -84,12 +84,12 @@ export const SectionManager: React.FC<SectionManagerProps> = ({
                 e.stopPropagation();
                 onToggleSection(section);
               }}
-              className="p-1 rounded hover:bg-gray-200 transition-colors duration-200"
+              className="p-1 rounded hover:bg-gray-200 transition-colors duration-200 flex-shrink-0"
             >
               {enabledSections.includes(section) ? (
-                <Eye className="w-4 h-4 text-blue-600" />
+                <Eye className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
               ) : (
-                <EyeOff className="w-4 h-4 text-gray-400" />
+                <EyeOff className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
               )}
             </button>
           </div>

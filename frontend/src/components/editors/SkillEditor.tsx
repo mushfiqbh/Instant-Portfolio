@@ -49,7 +49,7 @@ export const SkillsEditor: React.FC<SkillsEditorProps> = ({
   }, {} as Record<string, Skill[]>);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Skills</h2>
         <button
@@ -70,13 +70,13 @@ export const SkillsEditor: React.FC<SkillsEditorProps> = ({
             </h3>
 
             <div className="space-y-3">
-              {groupedSkills[category].map((skill) => (
+              {groupedSkills[category].map((skill, index) => (
                 <div
-                  key={skill._id}
+                  key={index}
                   className="bg-white p-3 rounded-lg space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex-1 grid grid-cols-2 gap-4">
+                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Skill Name

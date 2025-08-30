@@ -76,7 +76,7 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col p-5">
+    <div className="h-full flex flex-col p-2 sm:p-5 overflow-y-scroll">
       <SectionManager
         sectionOrder={portfolioData.sectionOrder}
         enabledSections={portfolioData.enabledSections}
@@ -93,7 +93,7 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
         }}
       />
 
-      <div className="flex-1 overflow-y-auto">{renderEditor()}</div>
+      <div className="flex-1 mt-2 sm:mt-4">{renderEditor()}</div>
     </div>
   );
 };
