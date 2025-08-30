@@ -33,8 +33,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
       </h2>
       
       <div className="space-y-8">
-        {experiences.map((experience) => (
-          <div key={experience._id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
+        {experiences.map((experience, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-1">

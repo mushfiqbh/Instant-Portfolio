@@ -96,7 +96,7 @@ const BuilderPage = () => {
 
         // Transform backend data to frontend format
         const transformedData: PortfolioData = {
-          personalInfo: {
+          personalInfo: backendPortfolio.personalInfo || {
             name: userProfile?.name || user?.name || "",
             email: userProfile?.email || user?.email || "",
             title: userProfile?.title || "Web Developer",
@@ -171,7 +171,6 @@ const BuilderPage = () => {
             "projects",
             "skills",
             "education",
-            "contact",
           ],
           enabledSections: [
             "about",
@@ -179,7 +178,6 @@ const BuilderPage = () => {
             "projects",
             "skills",
             "education",
-            "contact",
           ],
         };
 
@@ -242,6 +240,11 @@ const BuilderPage = () => {
 
     const updatedData = { ...portfolioData, ...updates };
     setPortfolioData(updatedData);
+
+    // If personalInfo was updated, also update userProfile to keep them in sync
+    if (updates.personalInfo && userProfile) {
+      setUserProfile({ ...userProfile, ...updates.personalInfo });
+    }
   };
 
   const savePortfolio = async () => {
@@ -253,6 +256,16 @@ const BuilderPage = () => {
 
       // Transform frontend data to backend format
       const backendData = {
+        personalInfo: {
+          name: portfolioData.personalInfo.name,
+          email: portfolioData.personalInfo.email,
+          title: portfolioData.personalInfo.title,
+          slogan: portfolioData.personalInfo.slogan,
+          bio: portfolioData.personalInfo.bio,
+          profileImage: portfolioData.personalInfo.profileImage,
+          socialLinks: portfolioData.personalInfo.socialLinks,
+          contactInfo: portfolioData.personalInfo.contactInfo,
+        },
         education: portfolioData.education.map((edu) => ({
           school: edu.school,
           degree: edu.degree,
@@ -291,7 +304,7 @@ const BuilderPage = () => {
         })),
       };
 
-      // Update user profile
+      // Update user profile (basic info and profile image)
       await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
         method: "PUT",
         headers: {

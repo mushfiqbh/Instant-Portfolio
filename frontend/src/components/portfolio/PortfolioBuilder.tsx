@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { SectionManager } from './SectionManager';
-import { PersonalInfoEditor } from '../editors/PersonalInfoEditor';
-import { ExperienceEditor } from '../editors/ExperienceEditor';
-import { ProjectsEditor } from '../editors/ProjectEditor';
-import { SkillsEditor } from '../editors/SkillEditor';
-import { EducationEditor } from '../editors/EducationEditor';
-import { PortfolioData } from '../../types/portfolio';
+import React, { useEffect } from "react";
+import { SectionManager } from "./SectionManager";
+import { PersonalInfoEditor } from "../editors/PersonalInfoEditor";
+import { ExperienceEditor } from "../editors/ExperienceEditor";
+import { ProjectsEditor } from "../editors/ProjectEditor";
+import { SkillsEditor } from "../editors/SkillEditor";
+import { EducationEditor } from "../editors/EducationEditor";
+import { PortfolioData } from "../../types/portfolio";
 
 interface PortfolioBuilderProps {
   portfolioData: PortfolioData;
@@ -18,7 +18,7 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
   portfolioData,
   onUpdateData,
   activeSection,
-  onSectionChange
+  onSectionChange,
 }) => {
   // Auto-save functionality
   useEffect(() => {
@@ -31,35 +31,35 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
 
   const renderEditor = () => {
     switch (activeSection) {
-      case 'about':
+      case "about":
         return (
           <PersonalInfoEditor
             personalInfo={portfolioData.personalInfo}
             onUpdate={(personalInfo) => onUpdateData({ personalInfo })}
           />
         );
-      case 'experience':
+      case "experience":
         return (
           <ExperienceEditor
             experiences={portfolioData.experiences}
             onUpdate={(experiences) => onUpdateData({ experiences })}
           />
         );
-      case 'projects':
+      case "projects":
         return (
           <ProjectsEditor
             projects={portfolioData.projects}
             onUpdate={(projects) => onUpdateData({ projects })}
           />
         );
-      case 'skills':
+      case "skills":
         return (
           <SkillsEditor
             skills={portfolioData.skills}
             onUpdate={(skills) => onUpdateData({ skills })}
           />
         );
-      case 'education':
+      case "education":
         return (
           <EducationEditor
             education={portfolioData.education}
@@ -76,7 +76,7 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col p-5">
       <SectionManager
         sectionOrder={portfolioData.sectionOrder}
         enabledSections={portfolioData.enabledSections}
@@ -84,16 +84,16 @@ export const PortfolioBuilder: React.FC<PortfolioBuilderProps> = ({
         onSectionChange={onSectionChange}
         onUpdateOrder={(sectionOrder) => onUpdateData({ sectionOrder })}
         onToggleSection={(section: string) => {
-          const enabledSections = portfolioData.enabledSections.includes(section)
-            ? portfolioData.enabledSections.filter(s => s !== section)
+          const enabledSections = portfolioData.enabledSections.includes(
+            section
+          )
+            ? portfolioData.enabledSections.filter((s) => s !== section)
             : [...portfolioData.enabledSections, section];
           onUpdateData({ enabledSections });
         }}
       />
-      
-      <div className="flex-1 overflow-y-auto">
-        {renderEditor()}
-      </div>
+
+      <div className="flex-1 overflow-y-auto">{renderEditor()}</div>
     </div>
   );
 };

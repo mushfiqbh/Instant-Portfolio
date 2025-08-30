@@ -14,7 +14,22 @@ interface RequestBody {
   email: string;
   password: string;
   name?: string;
+  title?: string;
+  slogan?: string;
+  bio?: string;
   profileImage?: string;
+  socialLinks?: {
+    resume?: string;
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    facebook?: string;
+    whatsapp?: string;
+  };
+  contactInfo?: {
+    phone?: string;
+    address?: string;
+  };
 }
 
 // Generate JWT token

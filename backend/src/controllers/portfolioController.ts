@@ -22,14 +22,47 @@ export const createPortfolio = async (
         .json({ success: false, message: "Portfolio already exists" });
     }
 
-    const newPortfolio = new Portfolio({ user: userId, ...req.body });
-    await newPortfolio.save();
+    // Provide defaults for empty or missing fields
+    const defaultData = {
+      personalInfo: {
+        name: "",
+        email: "",
+        title: "",
+        slogan: "",
+        bio: "",
+        profileImage: "",
+        socialLinks: {
+          resume: "",
+          github: "",
+          linkedin: "",
+          twitter: "",
+          facebook: "",
+          whatsapp: "",
+        },
+        contactInfo: {
+          phone: "",
+          address: "",
+        },
+      },
+      education: [],
+      experience: [],
+      projects: [],
+      skills: [],
+      sectionOrder: ["about", "experience", "projects", "skills", "education", "contact"],
+      enabledSections: ["about", "experience", "projects", "skills", "education", "contact"],
+    };
 
+    const portfolioData = { ...defaultData, ...req.body };
+
+    const newPortfolio = new Portfolio({ user: userId, ...portfolioData });
+
+    await newPortfolio.save();
     res.status(201).json({ success: true, portfolio: newPortfolio });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error creating portfolio", error });
+    res.status(500).json({
+      success: false,
+      message: "Error creating portfolio",
+    });
   }
 };
 
@@ -48,7 +81,32 @@ export const getPortfolio = async (
         .json({ success: false, message: "Portfolio not found" });
     }
 
-    res.status(200).json({ success: true, portfolio });
+    // Ensure personalInfo exists with defaults if missing
+    const portfolioData = portfolio.toObject();
+    if (!portfolioData.personalInfo) {
+      portfolioData.personalInfo = {
+        name: "",
+        email: "",
+        title: "",
+        slogan: "",
+        bio: "",
+        profileImage: "",
+        socialLinks: {
+          resume: "",
+          github: "",
+          linkedin: "",
+          twitter: "",
+          facebook: "",
+          whatsapp: "",
+        },
+        contactInfo: {
+          phone: "",
+          address: "",
+        },
+      };
+    }
+
+    res.status(200).json({ success: true, portfolio: portfolioData });
   } catch (error) {
     res
       .status(500)

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { PortfolioData, Theme } from "../../types/portfolio";
-import { AboutSection } from "../preview/AboutSection";
-import { ExperienceSection } from "../preview/ExperienceSection";
-import { ProjectsSection } from "./ProjectsSection";
-import { SkillsSection } from "../preview/SkillsSection";
-import { EducationSection } from "../preview/EducationSection";
-import { ContactSection } from "../preview/ContactSection";
+import { AboutSection } from "../sections/AboutSection";
+import { ExperienceSection } from "../sections/ExperienceSection";
+import { ProjectsSection } from "../sections/ProjectsSection";
+import { SkillsSection } from "../sections/SkillsSection";
+import { EducationSection } from "../sections/EducationSection";
 
 interface PortfolioPreviewProps {
   portfolioData: PortfolioData;
@@ -127,21 +126,6 @@ export const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
           >
             <EducationSection
               education={portfolioData.education}
-              theme={themeStyle}
-            />
-          </div>
-        );
-      case "contact":
-        return (
-          <div
-            key={sectionId}
-            ref={(el) => {
-              sectionRefs.current[sectionId] = el;
-            }}
-            className={`transition-all duration-300 ${sectionClass}`}
-          >
-            <ContactSection
-              personalInfo={portfolioData.personalInfo}
               theme={themeStyle}
             />
           </div>

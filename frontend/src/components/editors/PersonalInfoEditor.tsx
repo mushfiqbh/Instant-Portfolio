@@ -32,7 +32,26 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
 
       if (response.ok) {
         const data = await response.json();
-        handleChange('profileImage', data.imageUrl);
+        const imageUrl = data.imageUrl;
+
+        // Update personalInfo state
+        handleChange('profileImage', imageUrl);
+
+        // Also update user profile immediately
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              profileImage: imageUrl,
+            }),
+          });
+        } catch (userUpdateError) {
+          console.error('Error updating user profile with image:', userUpdateError);
+        }
       }
     } catch (error) {
       console.error('Error uploading image:', error);

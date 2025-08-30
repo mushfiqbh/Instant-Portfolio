@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
-import { Plus, Edit, Eye, Trash2 } from "lucide-react";
+import { Plus, Edit, Eye } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PortfolioData } from "@/types/portfolio";
@@ -64,7 +64,7 @@ const DashboardPage = () => {
                 <div className="px-6 py-8">
                   <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                      Create Your Portfolio
+                      Create/Edit Your Portfolio
                     </h2>
                     <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                       Build a stunning portfolio website in minutes. Showcase
@@ -79,7 +79,7 @@ const DashboardPage = () => {
                         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
                         <Plus className="w-5 h-5 mr-2" />
-                        Create Portfolio
+                        Create/Edit Portfolio
                       </button>
                     ) : (
                       <div className="flex justify-center space-x-4">
@@ -203,16 +203,6 @@ const DashboardPage = () => {
                       </p>
                     </div>
                   </Link>
-
-                  <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-red-300 hover:bg-red-50 transition-all duration-200">
-                    <Trash2 className="w-6 h-6 text-red-600 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-900">Delete</h4>
-                      <p className="text-sm text-gray-600">
-                        Remove your portfolio
-                      </p>
-                    </div>
-                  </button>
                 </div>
               </div>
             </div>

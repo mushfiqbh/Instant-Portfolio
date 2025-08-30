@@ -27,8 +27,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects, them
       </h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projects.map((project) => (
-          <div key={project._id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+        {projects.map((project, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
             {project.imageUrl && (
               <div className="relative">
                 <div className="w-full h-48 relative">

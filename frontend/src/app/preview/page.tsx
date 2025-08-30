@@ -4,57 +4,18 @@ import { useState, useEffect } from "react";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
 import { ArrowLeft, Download, Share2 } from "lucide-react";
 import Link from "next/link";
-
-interface Experience {
-  _id?: string;
-  title: string;
-  company: string;
-  location: string;
-  startDate: string;
-  endDate?: string;
-  description: string;
-  achievements: string[];
-}
-
-interface Project {
-  _id?: string;
-  title: string;
-  description: string;
-  liveurl: string;
-  githuburl: string;
-  image: string;
-  techStack: string[];
-  featured: boolean;
-}
-
-interface Education {
-  _id?: string;
-  school: string;
-  degree: string;
-  fieldOfStudy: string;
-  startDate: string;
-  endDate?: string;
-  grade: string;
-  honors: string[];
-}
-
-interface Skill {
-  _id?: string;
-  name: string;
-  category: string;
-}
-
-interface PortfolioData {
-  _id: string;
-  user: string;
-  education: Education[];
-  experience: Experience[];
-  projects: Project[];
-  skills: Skill[];
-}
+import Image from "next/image";
+import { PortfolioData } from "@/types/portfolio";
+import { AboutSection } from "../../components/sections/AboutSection";
+import { ExperienceSection } from "../../components/sections/ExperienceSection";
+import { ProjectsSection } from "../../components/sections/ProjectsSection";
+import { EducationSection } from "../../components/sections/EducationSection";
+import { SkillsSection } from "../../components/sections/SkillsSection";
 
 const PreviewPage = () => {
-  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
+  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -65,7 +26,7 @@ const PreviewPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolio`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -75,7 +36,40 @@ const PreviewPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setPortfolioData(data.portfolio);
+        const backendPortfolio = data.portfolio;
+
+        // Transform backend data to match frontend expectations
+        const transformedData: PortfolioData = {
+          personalInfo: backendPortfolio.personalInfo || {
+            name: "",
+            email: "",
+            title: "",
+            slogan: "",
+            bio: "",
+            profileImage: "",
+            socialLinks: {
+              resume: "",
+              github: "",
+              linkedin: "",
+              twitter: "",
+              facebook: "",
+              whatsapp: "",
+            },
+            contactInfo: {
+              phone: "",
+              address: "",
+            },
+          },
+          experiences:
+            backendPortfolio.experience || backendPortfolio.experiences || [],
+          projects: backendPortfolio.projects || [],
+          education: backendPortfolio.education || [],
+          skills: backendPortfolio.skills || [],
+          sectionOrder: [],
+          enabledSections: [],
+        };
+
+        setPortfolioData(transformedData);
       }
     } catch (error) {
       console.error("Error fetching portfolio:", error);
@@ -132,7 +126,9 @@ const PreviewPage = () => {
                   <ArrowLeft className="w-5 h-5" />
                   <span>Back to Builder</span>
                 </Link>
-                <h1 className="text-xl font-bold text-gray-900">Portfolio Preview</h1>
+                <h1 className="text-xl font-bold text-gray-900">
+                  Portfolio Preview
+                </h1>
               </div>
 
               <div className="flex items-center space-x-4">
@@ -152,14 +148,40 @@ const PreviewPage = () => {
         {/* Portfolio Preview */}
         <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            {/* Hero Section */}
+            {/* Hero Section with Profile Image */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16 px-8">
               <div className="text-center">
-                <h1 className="text-4xl font-bold mb-4">John Doe</h1>
-                <p className="text-xl mb-6">Full Stack Developer</p>
+                <div className="relative w-32 h-32 mx-auto mb-6">
+                  {portfolioData.personalInfo?.profileImage ? (
+                    <Image
+                      src={portfolioData.personalInfo.profileImage}
+                      alt={portfolioData.personalInfo.name}
+                      width={128}
+                      height={128}
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 border-4 border-white shadow-lg flex items-center justify-center">
+                      <span className="text-white text-2xl font-bold">
+                        {portfolioData.personalInfo?.name
+                          ?.split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase() || "U"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <h1 className="text-4xl font-bold mb-4">
+                  {portfolioData.personalInfo?.name || "Your Name"}
+                </h1>
+                <p className="text-xl mb-6">
+                  {portfolioData.personalInfo?.title || "Your Title"}
+                </p>
                 <p className="text-lg max-w-2xl mx-auto">
-                  Passionate developer with 5+ years of experience building web applications
-                  and solving complex problems with modern technologies.
+                  {portfolioData.personalInfo?.bio ||
+                    "Your bio will appear here."}
                 </p>
               </div>
             </div>
@@ -167,99 +189,70 @@ const PreviewPage = () => {
             {/* Content Sections */}
             <div className="p-8 space-y-12">
               {/* Experience Section */}
-              {portfolioData.experience && portfolioData.experience.length > 0 && (
-                <section>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Experience</h2>
-                  <div className="space-y-6">
-                    {portfolioData.experience.map((exp, index) => (
-                      <div key={exp._id || index} className="border-l-4 border-blue-500 pl-6">
-                        <h3 className="text-xl font-semibold text-gray-900">{exp.title}</h3>
-                        <p className="text-blue-600 font-medium">{exp.company}</p>
-                        <p className="text-gray-600 mb-3">{exp.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
+              {portfolioData.experiences &&
+                portfolioData.experiences.length > 0 && (
+                  <ExperienceSection
+                    experiences={portfolioData.experiences}
+                    theme={{
+                      primary: "text-blue-600",
+                      secondary: "text-gray-600",
+                      accent: "bg-blue-600",
+                      gradient: "from-blue-600 to-purple-600",
+                    }}
+                  />
+                )}
 
               {/* Projects Section */}
               {portfolioData.projects && portfolioData.projects.length > 0 && (
-                <section>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Projects</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {portfolioData.projects.map((project, index) => (
-                      <div key={project._id || index} className="border border-gray-200 rounded-lg p-6">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">{project.title}</h3>
-                        <p className="text-gray-600 mb-4">{project.description}</p>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.techStack.map((tech: string, techIndex: number) => (
-                            <span
-                              key={techIndex}
-                              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex space-x-4">
-                          {project.liveurl && (
-                            <a
-                              href={project.liveurl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800"
-                            >
-                              Live Demo
-                            </a>
-                          )}
-                          {project.githuburl && (
-                            <a
-                              href={project.githuburl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-600 hover:text-gray-800"
-                            >
-                              GitHub
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+                <ProjectsSection
+                  projects={portfolioData.projects}
+                  theme={{
+                    primary: "text-blue-600",
+                    secondary: "text-gray-600",
+                    accent: "bg-blue-600",
+                    gradient: "from-blue-600 to-purple-600",
+                  }}
+                />
               )}
 
               {/* Education Section */}
-              {portfolioData.education && portfolioData.education.length > 0 && (
-                <section>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Education</h2>
-                  <div className="space-y-4">
-                    {portfolioData.education.map((edu, index) => (
-                      <div key={edu._id || index} className="border border-gray-200 rounded-lg p-6">
-                        <h3 className="text-xl font-semibold text-gray-900">{edu.degree}</h3>
-                        <p className="text-blue-600">{edu.school}</p>
-                        <p className="text-gray-600">{edu.fieldOfStudy}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
+              {portfolioData.education &&
+                portfolioData.education.length > 0 && (
+                  <EducationSection
+                    education={portfolioData.education}
+                    theme={{
+                      primary: "text-blue-600",
+                      secondary: "text-gray-600",
+                      accent: "bg-blue-600",
+                      gradient: "from-blue-600 to-purple-600",
+                    }}
+                  />
+                )}
 
               {/* Skills Section */}
               {portfolioData.skills && portfolioData.skills.length > 0 && (
-                <section>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Skills</h2>
-                  <div className="flex flex-wrap gap-3">
-                    {portfolioData.skills.map((skill, index) => (
-                      <span
-                        key={skill._id || index}
-                        className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg"
-                      >
-                        {skill.name}
-                      </span>
-                    ))}
-                  </div>
-                </section>
+                <SkillsSection
+                  skills={portfolioData.skills}
+                  theme={{
+                    primary: "text-blue-600",
+                    secondary: "text-gray-600",
+                    accent: "bg-blue-600",
+                    gradient: "from-blue-600 to-purple-600",
+                  }}
+                />
+              )}
+
+              {/* About Section */}
+              {portfolioData.personalInfo && (
+                <AboutSection
+                  personalInfo={portfolioData.personalInfo}
+                  theme={{
+                    primary: "text-blue-600",
+                    secondary: "text-gray-600",
+                    accent: "bg-blue-600",
+                    gradient: "from-blue-600 to-purple-600",
+                  }}
+                />
               )}
             </div>
           </div>
