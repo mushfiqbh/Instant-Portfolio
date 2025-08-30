@@ -19,7 +19,7 @@ const DashboardPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolio`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const DashboardPage = () => {
                 <div className="px-6 py-8">
                   <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                      Create/Edit Your Portfolio
+                      Your Portfolio
                     </h2>
                     <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                       Build a stunning portfolio website in minutes. Showcase
@@ -72,7 +72,7 @@ const DashboardPage = () => {
                         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
                         <Plus className="w-5 h-5 mr-2" />
-                        Create/Edit Portfolio
+                        Create Portfolio
                       </button>
                     ) : (
                       <div className="flex justify-center space-x-4">
@@ -161,57 +161,6 @@ const DashboardPage = () => {
                 </div>
               </div>
             )}
-
-            {/* Recent Activity or Quick Actions */}
-            <div className="bg-white overflow-hidden shadow-lg rounded-lg">
-              <div className="px-6 py-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">
-                  Quick Actions
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <Link
-                    href="/builder"
-                    className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
-                  >
-                    <Edit className="w-6 h-6 text-blue-600 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-900">
-                        Edit Portfolio
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        Update your portfolio content
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/preview"
-                    className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200"
-                  >
-                    <Eye className="w-6 h-6 text-green-600 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-900">Preview</h4>
-                      <p className="text-sm text-gray-600">
-                        See how your portfolio looks
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200"
-                  >
-                    <Eye className="w-6 h-6 text-green-600 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-900">Publish</h4>
-                      <p className="text-sm text-gray-600">
-                        Make your portfolio public
-                      </p>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
           </div>
         </main>
       </div>

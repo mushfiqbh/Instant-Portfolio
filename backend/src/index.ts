@@ -29,6 +29,13 @@ mongoose
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // API Endpoints
+app.get("/", (req, res) => {
+  res.status(200).json({
+    live: true,
+    message: "Instant Portfolio Server is Running",
+    version: "1.0.0",
+  });
+});
 app.use("/api/users", userRouter);
 app.use("/api/portfolios", portfolioRouter);
 app.use("/api/uploads", uploadRouter);
