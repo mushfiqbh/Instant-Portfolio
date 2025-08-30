@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import { Request, Response } from "express";
-import uploadToCloudinary from "../utils/cloudinaryUpload";
 
 // Extend Express Request type to include userId
 interface AuthenticatedRequest extends Request {
@@ -134,12 +133,6 @@ export const updateUserProfile = async (
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
-    }
-
-    // Handle profile image upload
-    if (req.file) {
-      const imageUrl = await uploadToCloudinary(req.file.buffer, "instant-portfolio-images");
-      updateData.profileImage = imageUrl as string;
     }
 
     await User.findByIdAndUpdate(userId, updateData, {

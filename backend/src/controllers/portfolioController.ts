@@ -1,8 +1,17 @@
 import Portfolio from "../models/portfolioModel";
 import { Request, Response } from "express";
 
+// Extend Express Request type to include userId and file
+interface AuthenticatedRequest extends Request {
+  userId: string;
+  file?: Express.Multer.File;
+}
+
 // ===================== CREATE PORTFOLIO =====================
-export const createPortfolio = async (req: Request, res: Response) => {
+export const createPortfolio = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
     const userId = req.userId;
     const existingPortfolio = await Portfolio.findOne({ user: userId });
@@ -25,7 +34,10 @@ export const createPortfolio = async (req: Request, res: Response) => {
 };
 
 // ===================== GET USER PORTFOLIO =====================
-export const getPortfolio = async (req: Request, res: Response) => {
+export const getPortfolio = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
     const userId = req.userId;
     const portfolio = await Portfolio.findOne({ user: userId });
@@ -45,7 +57,10 @@ export const getPortfolio = async (req: Request, res: Response) => {
 };
 
 // ===================== UPDATE PORTFOLIO =====================
-export const updatePortfolio = async (req: Request, res: Response) => {
+export const updatePortfolio = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
     const userId = req.userId;
     const updatedPortfolio = await Portfolio.findOneAndUpdate(
@@ -69,7 +84,10 @@ export const updatePortfolio = async (req: Request, res: Response) => {
 };
 
 // ===================== DELETE PORTFOLIO =====================
-export const deletePortfolio = async (req: Request, res: Response) => {
+export const deletePortfolio = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
     const userId = req.userId;
     const deletedPortfolio = await Portfolio.findOneAndDelete({ user: userId });
@@ -85,89 +103,5 @@ export const deletePortfolio = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ success: false, message: "Error deleting portfolio", error });
-  }
-};
-
-// ===================== ADD EDUCATION =====================
-export const addEducation = async (req: Request, res: Response) => {
-  try {
-    const userId = req.userId;
-    const portfolio = await Portfolio.findOne({ user: userId });
-    if (!portfolio)
-      return res
-        .status(404)
-        .json({ success: false, message: "Portfolio not found" });
-
-    portfolio.education.push(req.body);
-    await portfolio.save();
-
-    res.status(200).json({ success: true, education: portfolio.education });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error adding education", error });
-  }
-};
-
-// ===================== ADD EXPERIENCE =====================
-export const addExperience = async (req: Request, res: Response) => {
-  try {
-    const userId = req.userId;
-    const portfolio = await Portfolio.findOne({ user: userId });
-    if (!portfolio)
-      return res
-        .status(404)
-        .json({ success: false, message: "Portfolio not found" });
-
-    portfolio.experience.push(req.body);
-    await portfolio.save();
-
-    res.status(200).json({ success: true, experience: portfolio.experience });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error adding experience", error });
-  }
-};
-
-// ===================== ADD PROJECT =====================
-export const addProject = async (req: Request, res: Response) => {
-  try {
-    const userId = req.userId;
-    const portfolio = await Portfolio.findOne({ user: userId });
-    if (!portfolio)
-      return res
-        .status(404)
-        .json({ success: false, message: "Portfolio not found" });
-
-    portfolio.projects.push(req.body);
-    await portfolio.save();
-
-    res.status(200).json({ success: true, projects: portfolio.projects });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error adding project", error });
-  }
-};
-
-// ===================== ADD SKILL =====================
-export const addSkill = async (req: Request, res: Response) => {
-  try {
-    const userId = req.userId;
-    const portfolio = await Portfolio.findOne({ user: userId });
-    if (!portfolio)
-      return res
-        .status(404)
-        .json({ success: false, message: "Portfolio not found" });
-
-    portfolio.skills.push(req.body);
-    await portfolio.save();
-
-    res.status(200).json({ success: true, skills: portfolio.skills });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error adding skill", error });
   }
 };

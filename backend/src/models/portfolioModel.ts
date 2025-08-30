@@ -37,7 +37,7 @@ const portfolioSchema = new mongoose.Schema(
         description: { type: String, default: "" },
         liveurl: { type: String, default: "" },
         githuburl: { type: String, default: "" },
-        image: { type: String, default: "" },
+        imageUrl: { type: String, default: "" },
         techStack: { type: [String], default: [] },
         featured: { type: Boolean, default: false },
       },

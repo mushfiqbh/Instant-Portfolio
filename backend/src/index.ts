@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRoute";
 import portfolioRouter from "./routes/portfolioRoute";
 import { errorHandler } from "./middlewares/errorHandler";
+import uploadRouter from "./routes/uploadRoute";
 
 // Environment Variables
 dotenv.config();
@@ -30,6 +31,7 @@ mongoose
 // API Endpoints
 app.use("/api/users", userRouter);
 app.use("/api/portfolios", portfolioRouter);
+app.use("/api/uploads", uploadRouter);
 
 // Start server
 app.listen(PORT, () => {
