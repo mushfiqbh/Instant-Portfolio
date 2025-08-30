@@ -5,21 +5,13 @@ import { useAuth } from "../../context/AuthContext";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
 import { Plus, Edit, Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
-
-interface Portfolio {
-  _id: string;
-  user: string;
-  education: any[];
-  experience: any[];
-  projects: any[];
-  skills: any[];
-  createdAt: string;
-}
+import { useRouter } from "next/navigation";
+import { PortfolioData } from "@/types/portfolio";
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [portfolios, setPortfolios] = useState<PortfolioData[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchPortfolios();
@@ -43,31 +35,6 @@ const DashboardPage = () => {
       }
     } catch (error) {
       console.error("Error fetching portfolios:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const createPortfolio = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolio`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({}),
-        }
-      );
-
-      if (response.ok) {
-        await fetchPortfolios(); // Refresh the list
-      }
-    } catch (error) {
-      console.error("Error creating portfolio:", error);
     }
   };
 
@@ -80,7 +47,9 @@ const DashboardPage = () => {
             <div className="flex justify-between items-center h-16">
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700">Welcome, {user?.name || user?.email}</span>
+                <span className="text-gray-700">
+                  Welcome, {user?.name || user?.email}
+                </span>
               </div>
             </div>
           </div>
@@ -98,12 +67,15 @@ const DashboardPage = () => {
                       Create Your Portfolio
                     </h2>
                     <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                      Build a stunning portfolio website in minutes. Showcase your skills,
-                      projects, and experience with our easy-to-use portfolio builder.
+                      Build a stunning portfolio website in minutes. Showcase
+                      your skills, projects, and experience with our easy-to-use
+                      portfolio builder.
                     </p>
                     {portfolios.length === 0 ? (
                       <button
-                        onClick={createPortfolio}
+                        onClick={() => {
+                          router.push("/builder");
+                        }}
                         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                       >
                         <Plus className="w-5 h-5 mr-2" />
@@ -144,8 +116,12 @@ const DashboardPage = () => {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h3 className="text-lg font-medium text-gray-900">Projects</h3>
-                        <p className="text-gray-600">{portfolios[0].projects?.length || 0} projects</p>
+                        <h3 className="text-lg font-medium text-gray-900">
+                          Projects
+                        </h3>
+                        <p className="text-gray-600">
+                          {portfolios[0].projects?.length || 0} projects
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -160,8 +136,12 @@ const DashboardPage = () => {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h3 className="text-lg font-medium text-gray-900">Experience</h3>
-                        <p className="text-gray-600">{portfolios[0].experience?.length || 0} positions</p>
+                        <h3 className="text-lg font-medium text-gray-900">
+                          Experience
+                        </h3>
+                        <p className="text-gray-600">
+                          {portfolios[0].experiences?.length || 0} positions
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -176,8 +156,12 @@ const DashboardPage = () => {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h3 className="text-lg font-medium text-gray-900">Skills</h3>
-                        <p className="text-gray-600">{portfolios[0].skills?.length || 0} skills</p>
+                        <h3 className="text-lg font-medium text-gray-900">
+                          Skills
+                        </h3>
+                        <p className="text-gray-600">
+                          {portfolios[0].skills?.length || 0} skills
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -188,7 +172,9 @@ const DashboardPage = () => {
             {/* Recent Activity or Quick Actions */}
             <div className="bg-white overflow-hidden shadow-lg rounded-lg">
               <div className="px-6 py-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-6">
+                  Quick Actions
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <Link
                     href="/builder"
@@ -196,8 +182,12 @@ const DashboardPage = () => {
                   >
                     <Edit className="w-6 h-6 text-blue-600 mr-3" />
                     <div>
-                      <h4 className="font-medium text-gray-900">Edit Portfolio</h4>
-                      <p className="text-sm text-gray-600">Update your portfolio content</p>
+                      <h4 className="font-medium text-gray-900">
+                        Edit Portfolio
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Update your portfolio content
+                      </p>
                     </div>
                   </Link>
 
@@ -208,7 +198,9 @@ const DashboardPage = () => {
                     <Eye className="w-6 h-6 text-green-600 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Preview</h4>
-                      <p className="text-sm text-gray-600">See how your portfolio looks</p>
+                      <p className="text-sm text-gray-600">
+                        See how your portfolio looks
+                      </p>
                     </div>
                   </Link>
 
@@ -216,7 +208,9 @@ const DashboardPage = () => {
                     <Trash2 className="w-6 h-6 text-red-600 mr-3" />
                     <div>
                       <h4 className="font-medium text-gray-900">Delete</h4>
-                      <p className="text-sm text-gray-600">Remove your portfolio</p>
+                      <p className="text-sm text-gray-600">
+                        Remove your portfolio
+                      </p>
                     </div>
                   </button>
                 </div>

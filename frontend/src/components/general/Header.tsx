@@ -12,7 +12,7 @@ import {
   User,
   ChevronDown,
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
 
 export default function Header() {
