@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
 import { Plus, Edit, Eye } from "lucide-react";
 import Link from "next/link";
@@ -9,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { PortfolioData } from "@/types/portfolio";
 
 const DashboardPage = () => {
-  const { user } = useAuth();
   const [portfolios, setPortfolios] = useState<PortfolioData[]>([]);
   const router = useRouter();
 
@@ -46,11 +44,6 @@ const DashboardPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-700">
-                  Welcome, {user?.name || user?.email}
-                </span>
-              </div>
             </div>
           </div>
         </header>

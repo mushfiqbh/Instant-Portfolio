@@ -41,10 +41,10 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-5 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-4">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Login to Instant Portfolio
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -151,10 +151,14 @@ const AuthPage = () => {
                 {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {activeTab === "login" ? "Signing in..." : "Creating account..."}
+                    {activeTab === "login"
+                      ? "Signing in..."
+                      : "Creating account..."}
                   </div>
+                ) : activeTab === "login" ? (
+                  "Sign In"
                 ) : (
-                  activeTab === "login" ? "Sign In" : "Create Account"
+                  "Create Account"
                 )}
               </button>
             </div>

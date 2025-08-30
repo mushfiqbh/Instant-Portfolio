@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { Loader2 } from "lucide-react";
 import { PersonalInfo } from "../../types/portfolio";
 
 interface PersonalInfoEditorProps {
@@ -12,10 +13,13 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
   personalInfo,
   onUpdate,
 }) => {
+  const [uploadingImage, setUploadingImage] = useState(false);
   // Handle file upload for profile image
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    setUploadingImage(true);
 
     const formData = new FormData();
     formData.append('image', file);
@@ -55,6 +59,8 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -150,19 +156,35 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
               Profile Image
             </label>
             <div className="space-y-2">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="url"
-                value={personalInfo.profileImage}
-                onChange={(e) => handleChange("profileImage", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Or paste image URL"
-              />
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  disabled={uploadingImage}
+                />
+                {uploadingImage && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 rounded-lg">
+                    <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
+                  </div>
+                )}
+              </div>
+              <div className="relative">
+                <input
+                  type="url"
+                  value={personalInfo.profileImage}
+                  onChange={(e) => handleChange("profileImage", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder={uploadingImage ? "Uploading..." : "Or paste image URL"}
+                  disabled={uploadingImage || Boolean(personalInfo.profileImage && personalInfo.profileImage.includes('cloudinary'))}
+                />
+                {uploadingImage && (
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

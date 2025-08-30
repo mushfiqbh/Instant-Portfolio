@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
 import { PortfolioBuilder } from "../../components/portfolio/PortfolioBuilder";
 import { PortfolioPreview } from "../../components/portfolio/PortfolioPreview";
 import { ThemeSelector } from "../../components/portfolio/ThemeSelector";
-import { Save, Eye, EyeOff, Palette } from "lucide-react";
+import { Save, Palette, CheckCircle, AlertCircle, Clock } from "lucide-react";
 import {
   Education,
   Experience,
@@ -49,6 +49,10 @@ const BuilderPage = () => {
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialLoad = useRef(true);
 
   useEffect(() => {
     if (user) {
@@ -56,6 +60,175 @@ const BuilderPage = () => {
       fetchPortfolioData();
     }
   }, [user]);
+
+  const savePortfolioToBackend = useCallback(async () => {
+    if (!portfolioData) return;
+    
+    const token = localStorage.getItem("token");
+
+    // Transform frontend data to backend format
+    const backendData = {
+      personalInfo: {
+        name: portfolioData.personalInfo.name,
+        email: portfolioData.personalInfo.email,
+        title: portfolioData.personalInfo.title,
+        slogan: portfolioData.personalInfo.slogan,
+        bio: portfolioData.personalInfo.bio,
+        profileImage: portfolioData.personalInfo.profileImage,
+        socialLinks: portfolioData.personalInfo.socialLinks,
+        contactInfo: portfolioData.personalInfo.contactInfo,
+      },
+      education: portfolioData.education.map((edu) => ({
+        school: edu.school,
+        degree: edu.degree,
+        fieldOfStudy: edu.fieldOfStudy,
+        startDate: edu.startDate ? new Date(edu.startDate) : undefined,
+        endDate: edu.endDate ? new Date(edu.endDate) : undefined,
+        grade: edu.grade,
+        honors: edu.honors.filter((h) => h.trim()),
+      })),
+      experience: portfolioData.experiences.map((exp) => ({
+        title: exp.title,
+        company: exp.company,
+        location: exp.location,
+        startDate: exp.startDate ? new Date(exp.startDate) : undefined,
+        endDate: exp.current
+          ? undefined
+          : exp.endDate
+          ? new Date(exp.endDate)
+          : undefined,
+        description: exp.description,
+        achievements: exp.achievements.filter((a) => a.trim()),
+      })),
+      projects: portfolioData.projects.map((proj) => ({
+        title: proj.title,
+        description: proj.description,
+        liveurl: proj.liveurl,
+        githuburl: proj.githuburl,
+        imageUrl: proj.imageUrl,
+        techStack: proj.techStack.filter((t) => t.trim()),
+        featured: proj.featured,
+      })),
+      skills: portfolioData.skills.map((skill) => ({
+        name: skill.name,
+        category: skill.category,
+        level: skill.level,
+      })),
+    };
+
+    // Update user profile (basic info and profile image)
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: portfolioData.personalInfo.name,
+        title: portfolioData.personalInfo.title,
+        slogan: portfolioData.personalInfo.slogan,
+        bio: portfolioData.personalInfo.bio,
+        profileImage: portfolioData.personalInfo.profileImage,
+        socialLinks: portfolioData.personalInfo.socialLinks,
+        contactInfo: portfolioData.personalInfo.contactInfo,
+      }),
+    });
+
+    // Check if portfolio exists
+    const checkResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let portfolioResponse;
+    if (checkResponse.status === 404) {
+      // Create new portfolio
+      portfolioResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(backendData),
+        }
+      );
+    } else {
+      // Update existing portfolio
+      portfolioResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(backendData),
+        }
+      );
+    }
+
+    if (!portfolioResponse.ok) {
+      throw new Error('Failed to save portfolio');
+    }
+  }, [portfolioData]);
+
+  const performAutoSave = useCallback(async () => {
+    if (!portfolioData) return;
+
+    setAutoSaveStatus('saving');
+    try {
+      await savePortfolioToBackend();
+      setAutoSaveStatus('saved');
+      setLastSaved(new Date());
+      
+      // Reset status after 3 seconds
+      setTimeout(() => {
+        setAutoSaveStatus('idle');
+      }, 3000);
+    } catch (error) {
+      console.error('Auto-save failed:', error);
+      setAutoSaveStatus('error');
+      
+      // Reset error status after 5 seconds
+      setTimeout(() => {
+        setAutoSaveStatus('idle');
+      }, 5000);
+    }
+  }, [portfolioData, savePortfolioToBackend]);
+
+  // Auto-save with debouncing
+  useEffect(() => {
+    if (!portfolioData || isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
+    }
+
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Set auto-save status to pending
+    setAutoSaveStatus('idle');
+
+    // Debounce auto-save for 2 seconds
+    saveTimeoutRef.current = setTimeout(() => {
+      performAutoSave();
+    }, 2000);
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [portfolioData, performAutoSave]);
 
   const fetchUserProfile = async () => {
     try {
@@ -252,118 +425,9 @@ const BuilderPage = () => {
 
     setSaving(true);
     try {
-      const token = localStorage.getItem("token");
-
-      // Transform frontend data to backend format
-      const backendData = {
-        personalInfo: {
-          name: portfolioData.personalInfo.name,
-          email: portfolioData.personalInfo.email,
-          title: portfolioData.personalInfo.title,
-          slogan: portfolioData.personalInfo.slogan,
-          bio: portfolioData.personalInfo.bio,
-          profileImage: portfolioData.personalInfo.profileImage,
-          socialLinks: portfolioData.personalInfo.socialLinks,
-          contactInfo: portfolioData.personalInfo.contactInfo,
-        },
-        education: portfolioData.education.map((edu) => ({
-          school: edu.school,
-          degree: edu.degree,
-          fieldOfStudy: edu.fieldOfStudy,
-          startDate: edu.startDate ? new Date(edu.startDate) : undefined,
-          endDate: edu.endDate ? new Date(edu.endDate) : undefined,
-          grade: edu.grade,
-          honors: edu.honors.filter((h) => h.trim()),
-        })),
-        experience: portfolioData.experiences.map((exp) => ({
-          title: exp.title,
-          company: exp.company,
-          location: exp.location,
-          startDate: exp.startDate ? new Date(exp.startDate) : undefined,
-          endDate: exp.current
-            ? undefined
-            : exp.endDate
-            ? new Date(exp.endDate)
-            : undefined,
-          description: exp.description,
-          achievements: exp.achievements.filter((a) => a.trim()),
-        })),
-        projects: portfolioData.projects.map((proj) => ({
-          title: proj.title,
-          description: proj.description,
-          liveurl: proj.liveurl,
-          githuburl: proj.githuburl,
-          imageUrl: proj.imageUrl,
-          techStack: proj.techStack.filter((t) => t.trim()),
-          featured: proj.featured,
-        })),
-        skills: portfolioData.skills.map((skill) => ({
-          name: skill.name,
-          category: skill.category,
-          level: skill.level,
-        })),
-      };
-
-      // Update user profile (basic info and profile image)
-      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: portfolioData.personalInfo.name,
-          title: portfolioData.personalInfo.title,
-          slogan: portfolioData.personalInfo.slogan,
-          bio: portfolioData.personalInfo.bio,
-          profileImage: portfolioData.personalInfo.profileImage,
-          socialLinks: portfolioData.personalInfo.socialLinks,
-          contactInfo: portfolioData.personalInfo.contactInfo,
-        }),
-      });
-
-      // Check if portfolio exists
-      const checkResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      let portfolioResponse;
-      if (checkResponse.status === 404) {
-        // Create new portfolio
-        portfolioResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(backendData),
-          }
-        );
-      } else {
-        // Update existing portfolio
-        portfolioResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/portfolios`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(backendData),
-          }
-        );
-      }
-
-      if (portfolioResponse.ok) {
-        console.log("Portfolio saved successfully");
-      }
+      await savePortfolioToBackend();
+      setLastSaved(new Date());
+      console.log("Portfolio saved successfully");
     } catch (error) {
       console.error("Error saving portfolio:", error);
     } finally {
@@ -413,24 +477,39 @@ const BuilderPage = () => {
               </h1>
 
               <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* Auto-save status indicator */}
+                <div className="flex items-center space-x-2 text-sm">
+                  {autoSaveStatus === 'saving' && (
+                    <>
+                      <Clock className="w-4 h-4 text-yellow-500 animate-spin" />
+                      <span className="text-yellow-600 hidden sm:inline">Saving...</span>
+                    </>
+                  )}
+                  {autoSaveStatus === 'saved' && (
+                    <>
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-green-600 hidden sm:inline">Saved</span>
+                    </>
+                  )}
+                  {autoSaveStatus === 'error' && (
+                    <>
+                      <AlertCircle className="w-4 h-4 text-red-500" />
+                      <span className="text-red-600 hidden sm:inline">Save failed</span>
+                    </>
+                  )}
+                  {lastSaved && autoSaveStatus === 'idle' && (
+                    <span className="text-gray-500 text-xs hidden sm:inline">
+                      Last saved: {lastSaved.toLocaleTimeString()}
+                    </span>
+                  )}
+                </div>
+
                 <button
                   onClick={() => setShowThemeSelector(!showThemeSelector)}
                   className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
                 >
                   <Palette className="w-4 h-4" />
                   <span className="hidden sm:inline">Theme</span>
-                </button>
-
-                <button
-                  onClick={() => setShowPreview(!showPreview)}
-                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
-                >
-                  {showPreview ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                  <span className="hidden sm:inline">{showPreview ? "Hide" : "Show"} Preview</span>
                 </button>
 
                 <button

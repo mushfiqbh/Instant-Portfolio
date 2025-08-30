@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Plus, Trash2, ExternalLink, Star } from "lucide-react";
+import React, { useState } from "react";
+import { Plus, Trash2, ExternalLink, Star, Upload, Loader2 } from "lucide-react";
 import { Project } from "../../types/portfolio";
 
 interface ProjectsEditorProps {
@@ -13,10 +13,14 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
   projects,
   onUpdate,
 }) => {
+  const [uploadingProjects, setUploadingProjects] = useState<Set<string>>(new Set());
   // Handle image upload for projects
   const handleImageUpload = async (projectId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // Add project to uploading set
+    setUploadingProjects(prev => new Set(prev).add(projectId));
 
     const formData = new FormData();
     formData.append('image', file);
@@ -37,6 +41,13 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+    } finally {
+      // Remove project from uploading set
+      setUploadingProjects(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(projectId);
+        return newSet;
+      });
     }
   };
 
@@ -191,21 +202,37 @@ export const ProjectsEditor: React.FC<ProjectsEditorProps> = ({
                   Project Image
                 </label>
                 <div className="space-y-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleImageUpload(project._id, e)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  <input
-                    type="url"
-                    value={project.imageUrl}
-                    onChange={(e) =>
-                      updateProject(project._id, { imageUrl: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Or paste image URL"
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(project._id, e)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      disabled={uploadingProjects.has(project._id)}
+                    />
+                    {uploadingProjects.has(project._id) && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 rounded-lg">
+                        <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="url"
+                      value={project.imageUrl}
+                      onChange={(e) =>
+                        updateProject(project._id, { imageUrl: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={uploadingProjects.has(project._id) ? "Uploading..." : "Or paste image URL"}
+                      disabled={uploadingProjects.has(project._id) || Boolean(project.imageUrl && project.imageUrl.includes('cloudinary'))}
+                    />
+                    {uploadingProjects.has(project._id) && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 

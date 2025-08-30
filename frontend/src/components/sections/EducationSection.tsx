@@ -27,56 +27,77 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education, t
   if (education.length === 0) return null;
 
   return (
-    <section className="mb-8 sm:mb-12">
-      <h2 className={`text-2xl sm:text-3xl font-bold ${theme.primary} mb-6 sm:mb-8 text-center`}>
-        Education
-      </h2>
-      
-      <div className="space-y-4 sm:space-y-6">
+    <section className="mb-12 sm:mb-16">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className={`text-3xl sm:text-4xl font-bold ${theme.primary} mb-4`}>
+          Education
+        </h2>
+        <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+      </div>
+
+      <div className="space-y-6 sm:space-y-8">
         {education.map((edu, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 sm:mb-4">
-              <div className="mb-2 sm:mb-0">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
-                  {edu.degree} in {edu.fieldOfStudy}
-                </h3>
-                <p className={`text-base sm:text-lg font-medium ${theme.secondary} mb-2`}>
-                  {edu.school}
-                </p>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-gray-600">
-                  <div className="flex items-center space-x-1 sm:space-x-2">
-                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">
-                      {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-                    </span>
+          <div key={index} className="group relative">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 border border-white/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 sm:mb-6">
+                <div className="mb-4 sm:mb-0 flex-1">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Award className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                        {edu.degree} in {edu.fieldOfStudy}
+                      </h3>
+                      <p className={`text-lg sm:text-xl font-semibold ${theme.secondary} mb-3`}>
+                        {edu.school}
+                      </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-gray-600">
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-4 h-4 text-blue-500" />
+                          <span className="text-sm sm:text-base font-medium">
+                            {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                          </span>
+                        </div>
+                        {edu.grade && (
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm sm:text-base font-medium bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
+                              Grade: {edu.grade}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  {edu.grade && (
-                    <span className="text-xs sm:text-sm">
-                      Grade: {edu.grade}
-                    </span>
-                  )}
                 </div>
               </div>
+
+              {edu.honors.length > 0 && edu.honors[0] && (
+                <div className="mt-6">
+                  <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
+                    <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-sm">🏆</span>
+                    </div>
+                    <span>Honors & Achievements</span>
+                  </h4>
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4">
+                    <ul className="space-y-3">
+                      {edu.honors
+                        .filter(honor => honor.trim())
+                        .map((honor, honorIndex) => (
+                        <li key={honorIndex} className="flex items-start space-x-3">
+                          <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="text-gray-700 text-sm sm:text-base leading-relaxed">{honor}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
-            
-            {edu.honors.length > 0 && edu.honors[0] && (
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center space-x-1 sm:space-x-2">
-                  <Award className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Honors & Achievements</span>
-                </h4>
-                <ul className="space-y-1">
-                  {edu.honors
-                    .filter(honor => honor.trim())
-                    .map((honor, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 ${theme.accent} rounded-full mt-1.5 sm:mt-2 flex-shrink-0`}></span>
-                      <span className="text-gray-700 text-xs sm:text-sm">{honor}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+
+            {/* Decorative gradient line */}
+            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         ))}
       </div>

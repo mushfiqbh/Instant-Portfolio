@@ -27,66 +27,87 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
   if (experiences.length === 0) return null;
 
   return (
-    <section className="mb-8 sm:mb-12">
-      <h2 className={`text-2xl sm:text-3xl font-bold ${theme.primary} mb-6 sm:mb-8 text-center`}>
-        Work Experience
-      </h2>
-      
-      <div className="space-y-6 sm:space-y-8">
+    <section className="mb-12 sm:mb-16">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className={`text-3xl sm:text-4xl font-bold ${theme.primary} mb-4`}>
+          Work Experience
+        </h2>
+        <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+      </div>
+
+      <div className="space-y-8 sm:space-y-10">
         {experiences.map((experience, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-              <div className="mb-2 sm:mb-0">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
-                  {experience.title}
-                </h3>
-                <p className={`text-base sm:text-lg font-medium ${theme.secondary} mb-2`}>
-                  {experience.company}
-                </p>
-                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">
-                      {formatDate(experience.startDate)} - {
-                        experience.current ? 'Present' : formatDate(experience.endDate)
-                      }
-                    </span>
+          <div key={index} className="group relative">
+            {/* Timeline line */}
+            <div className="absolute left-6 top-8 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 to-purple-500 opacity-30 group-last:hidden"></div>
+
+            {/* Experience card */}
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl p-6 sm:p-8 border border-white/50 transition-all duration-300 hover:scale-[1.02] ml-12">
+              {/* Timeline dot */}
+              <div className="absolute -left-16 top-8 w-4 h-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full border-4 border-white shadow-lg"></div>
+
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
+                <div className="flex-1 mb-4 lg:mb-0">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
+                        {experience.title}
+                      </h3>
+                      <p className={`text-lg sm:text-xl font-semibold ${theme.secondary} mb-3`}>
+                        {experience.company}
+                      </p>
+                    </div>
+                    {experience.current && (
+                      <span className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-medium rounded-full shadow-md">
+                        Current
+                      </span>
+                    )}
                   </div>
-                  {experience.location && (
-                    <>
-                      <span className="hidden sm:inline">•</span>
-                      <span className="text-xs sm:text-sm">{experience.location}</span>
-                    </>
-                  )}
+
+                  <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-4">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="w-4 h-4 text-indigo-500" />
+                      <span className="text-sm font-medium">
+                        {formatDate(experience.startDate)} - {
+                          experience.current ? 'Present' : formatDate(experience.endDate)
+                        }
+                      </span>
+                    </div>
+                    {experience.location && (
+                      <div className="flex items-center space-x-2">
+                        <span className="w-2 h-2 bg-indigo-400 rounded-full"></span>
+                        <span className="text-sm font-medium">{experience.location}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-              
-              {experience.current && (
-                <span className={`${theme.accent} text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium mt-2 sm:mt-0`}>
-                  Current
-                </span>
+
+              <div className="mb-6">
+                <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
+                  {experience.description}
+                </p>
+              </div>
+
+              {experience.achievements.length > 0 && experience.achievements[0] && (
+                <div className="border-t border-gray-100 pt-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <span className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>
+                    Key Achievements
+                  </h4>
+                  <ul className="space-y-3">
+                    {experience.achievements
+                      .filter(achievement => achievement.trim())
+                      .map((achievement, achievementIndex) => (
+                        <li key={achievementIndex} className="flex items-start space-x-3">
+                          <span className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mt-2 flex-shrink-0"></span>
+                          <span className="text-gray-700 text-sm sm:text-base leading-relaxed">{achievement}</span>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
               )}
             </div>
-            
-            <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">
-              {experience.description}
-            </p>
-            
-            {experience.achievements.length > 0 && experience.achievements[0] && (
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900 mb-2">Key Achievements</h4>
-                <ul className="space-y-1">
-                  {experience.achievements
-                    .filter(achievement => achievement.trim())
-                    .map((achievement, achievementIndex) => (
-                    <li key={achievementIndex} className="flex items-start space-x-2">
-                      <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 ${theme.accent} rounded-full mt-1.5 sm:mt-2 flex-shrink-0`}></span>
-                      <span className="text-gray-700 text-xs sm:text-sm">{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         ))}
       </div>
