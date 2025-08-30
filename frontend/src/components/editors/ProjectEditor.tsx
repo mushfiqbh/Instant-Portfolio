@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, ExternalLink, Star, Upload, Loader2 } from "lucide-react";
+import { Plus, Trash2, ExternalLink, Star, Loader2 } from "lucide-react";
 import { Project } from "../../types/portfolio";
 
 interface ProjectsEditorProps {

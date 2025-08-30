@@ -45,11 +45,12 @@ const BuilderPage = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [activeSection, setActiveSection] = useState("about");
   const [theme, setTheme] = useState<Theme>("professional");
-  const [showPreview, setShowPreview] = useState(true);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [autoSaveStatus, setAutoSaveStatus] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialLoad = useRef(true);
@@ -63,7 +64,7 @@ const BuilderPage = () => {
 
   const savePortfolioToBackend = useCallback(async () => {
     if (!portfolioData) return;
-    
+
     const token = localStorage.getItem("token");
 
     // Transform frontend data to backend format
@@ -174,30 +175,30 @@ const BuilderPage = () => {
     }
 
     if (!portfolioResponse.ok) {
-      throw new Error('Failed to save portfolio');
+      throw new Error("Failed to save portfolio");
     }
   }, [portfolioData]);
 
   const performAutoSave = useCallback(async () => {
     if (!portfolioData) return;
 
-    setAutoSaveStatus('saving');
+    setAutoSaveStatus("saving");
     try {
       await savePortfolioToBackend();
-      setAutoSaveStatus('saved');
+      setAutoSaveStatus("saved");
       setLastSaved(new Date());
-      
+
       // Reset status after 3 seconds
       setTimeout(() => {
-        setAutoSaveStatus('idle');
+        setAutoSaveStatus("idle");
       }, 3000);
     } catch (error) {
-      console.error('Auto-save failed:', error);
-      setAutoSaveStatus('error');
-      
+      console.error("Auto-save failed:", error);
+      setAutoSaveStatus("error");
+
       // Reset error status after 5 seconds
       setTimeout(() => {
-        setAutoSaveStatus('idle');
+        setAutoSaveStatus("idle");
       }, 5000);
     }
   }, [portfolioData, savePortfolioToBackend]);
@@ -215,7 +216,7 @@ const BuilderPage = () => {
     }
 
     // Set auto-save status to pending
-    setAutoSaveStatus('idle');
+    setAutoSaveStatus("idle");
 
     // Debounce auto-save for 2 seconds
     saveTimeoutRef.current = setTimeout(() => {
@@ -479,25 +480,31 @@ const BuilderPage = () => {
               <div className="flex items-center space-x-2 sm:space-x-4">
                 {/* Auto-save status indicator */}
                 <div className="flex items-center space-x-2 text-sm">
-                  {autoSaveStatus === 'saving' && (
+                  {autoSaveStatus === "saving" && (
                     <>
                       <Clock className="w-4 h-4 text-yellow-500 animate-spin" />
-                      <span className="text-yellow-600 hidden sm:inline">Saving...</span>
+                      <span className="text-yellow-600 hidden sm:inline">
+                        Saving...
+                      </span>
                     </>
                   )}
-                  {autoSaveStatus === 'saved' && (
+                  {autoSaveStatus === "saved" && (
                     <>
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span className="text-green-600 hidden sm:inline">Saved</span>
+                      <span className="text-green-600 hidden sm:inline">
+                        Saved
+                      </span>
                     </>
                   )}
-                  {autoSaveStatus === 'error' && (
+                  {autoSaveStatus === "error" && (
                     <>
                       <AlertCircle className="w-4 h-4 text-red-500" />
-                      <span className="text-red-600 hidden sm:inline">Save failed</span>
+                      <span className="text-red-600 hidden sm:inline">
+                        Save failed
+                      </span>
                     </>
                   )}
-                  {lastSaved && autoSaveStatus === 'idle' && (
+                  {lastSaved && autoSaveStatus === "idle" && (
                     <span className="text-gray-500 text-xs hidden sm:inline">
                       Last saved: {lastSaved.toLocaleTimeString()}
                     </span>
@@ -544,16 +551,13 @@ const BuilderPage = () => {
             />
           </div>
 
-          {/* Preview Panel */}
-          {showPreview && (
-            <div className="w-full lg:w-1/2 bg-gray-50 overflow-y-auto order-first lg:order-last">
-              <PortfolioPreview
-                portfolioData={portfolioData}
-                theme={theme}
-                activeSection={activeSection}
-              />
-            </div>
-          )}
+          <div className="w-full lg:w-1/2 bg-gray-50 overflow-y-auto order-first lg:order-last">
+            <PortfolioPreview
+              portfolioData={portfolioData}
+              theme={theme}
+              activeSection={activeSection}
+            />
+          </div>
         </div>
       </div>
     </ProtectedRoute>

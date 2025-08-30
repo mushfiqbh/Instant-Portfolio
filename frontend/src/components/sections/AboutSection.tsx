@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
-import { PersonalInfo } from '../../types/portfolio';
+import React from "react";
+import Image from "next/image";
+import { Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react";
+import { PersonalInfo } from "../../types/portfolio";
 
 interface ThemeStyle {
   primary: string;
@@ -17,7 +17,10 @@ interface AboutSectionProps {
   theme: ThemeStyle;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme }) => {
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  personalInfo,
+  theme,
+}) => {
   return (
     <section className="mb-16 sm:mb-20">
       <div className="text-center mb-12 sm:mb-16">
@@ -37,7 +40,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="relative">
               <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 border-4 border-white shadow-2xl flex items-center justify-center">
                 <span className="text-white text-3xl font-bold">
-                  {personalInfo.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                  {personalInfo.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()}
                 </span>
               </div>
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-xl"></div>
@@ -49,7 +56,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
           {personalInfo.name}
         </h1>
 
-        <p className={`text-xl sm:text-2xl font-semibold ${theme.primary} mb-6`}>
+        <p
+          className={`text-xl sm:text-2xl font-semibold ${theme.primary} mb-6`}
+        >
           {personalInfo.title}
         </p>
 
@@ -57,11 +66,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
           <p className="text-gray-600 text-lg leading-relaxed mb-4">
             {personalInfo.bio}
           </p>
-          {personalInfo.slogan && (
-            <p className={`text-xl italic ${theme.secondary} font-medium`}>
-              &ldquo;{personalInfo.slogan}&rdquo;
-            </p>
-          )}
         </div>
       </div>
 
@@ -74,7 +78,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Mail className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-red-600 transition-colors duration-300">{personalInfo.email}</span>
+            <span className="text-gray-700 font-medium group-hover:text-red-600 transition-colors duration-300">
+              {personalInfo.email}
+            </span>
           </a>
         )}
 
@@ -86,7 +92,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Phone className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-green-600 transition-colors duration-300">{personalInfo.contactInfo.phone}</span>
+            <span className="text-gray-700 font-medium group-hover:text-green-600 transition-colors duration-300">
+              {personalInfo.contactInfo.phone}
+            </span>
           </a>
         )}
 
@@ -95,7 +103,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
               <MapPin className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium">{personalInfo.contactInfo.address}</span>
+            <span className="text-gray-700 font-medium">
+              {personalInfo.contactInfo.address}
+            </span>
           </div>
         )}
 
@@ -109,7 +119,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Globe className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors duration-300">Resume</span>
+            <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors duration-300">
+              Resume
+            </span>
           </a>
         )}
 
@@ -123,7 +135,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Linkedin className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-blue-600 transition-colors duration-300">LinkedIn</span>
+            <span className="text-gray-700 font-medium group-hover:text-blue-600 transition-colors duration-300">
+              LinkedIn
+            </span>
           </a>
         )}
 
@@ -137,7 +151,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Github className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-gray-700 transition-colors duration-300">GitHub</span>
+            <span className="text-gray-700 font-medium group-hover:text-gray-700 transition-colors duration-300">
+              GitHub
+            </span>
           </a>
         )}
 
@@ -151,7 +167,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ personalInfo, theme 
             <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Globe className="w-6 h-6 text-white" />
             </div>
-            <span className="text-gray-700 font-medium group-hover:text-sky-600 transition-colors duration-300">Twitter</span>
+            <span className="text-gray-700 font-medium group-hover:text-sky-600 transition-colors duration-300">
+              Twitter
+            </span>
           </a>
         )}
       </div>

@@ -22,31 +22,34 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
     setUploadingImage(true);
 
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/uploads/image`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/uploads/image`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         const imageUrl = data.imageUrl;
 
         // Update personalInfo state
-        handleChange('profileImage', imageUrl);
+        handleChange("profileImage", imageUrl);
 
         // Also update user profile immediately
         try {
           await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
@@ -54,11 +57,14 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
             }),
           });
         } catch (userUpdateError) {
-          console.error('Error updating user profile with image:', userUpdateError);
+          console.error(
+            "Error updating user profile with image:",
+            userUpdateError
+          );
         }
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     } finally {
       setUploadingImage(false);
     }
@@ -128,19 +134,6 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Slogan
-            </label>
-            <input
-              type="text"
-              value={personalInfo.slogan}
-              onChange={(e) => handleChange("slogan", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Your catchy slogan here"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
@@ -176,8 +169,16 @@ export const PersonalInfoEditor: React.FC<PersonalInfoEditorProps> = ({
                   value={personalInfo.profileImage}
                   onChange={(e) => handleChange("profileImage", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={uploadingImage ? "Uploading..." : "Or paste image URL"}
-                  disabled={uploadingImage || Boolean(personalInfo.profileImage && personalInfo.profileImage.includes('cloudinary'))}
+                  placeholder={
+                    uploadingImage ? "Uploading..." : "Or paste image URL"
+                  }
+                  disabled={
+                    uploadingImage ||
+                    Boolean(
+                      personalInfo.profileImage &&
+                        personalInfo.profileImage.includes("cloudinary")
+                    )
+                  }
                 />
                 {uploadingImage && (
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">

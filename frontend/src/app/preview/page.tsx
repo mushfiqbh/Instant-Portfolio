@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ProtectedRoute from "../../components/general/ProtectedRoute";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { PortfolioData } from "@/types/portfolio";
@@ -84,7 +84,10 @@ const PreviewPage = () => {
           {/* Background decorative elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div
+              className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse"
+              style={{ animationDelay: "2s" }}
+            ></div>
           </div>
 
           <div className="relative z-10 text-center">
@@ -94,15 +97,25 @@ const PreviewPage = () => {
                   <div className="animate-spin rounded-full h-8 w-8 border-4 border-white border-t-transparent"></div>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Loading Your Portfolio</h2>
-              <p className="text-gray-600">Preparing your professional showcase...</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Loading Your Portfolio
+              </h2>
+              <p className="text-gray-600">
+                Preparing your professional showcase...
+              </p>
             </div>
 
             {/* Loading animation */}
             <div className="flex justify-center space-x-2">
               <div className="w-3 h-3 bg-indigo-600 rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-3 h-3 bg-pink-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div
+                className="w-3 h-3 bg-purple-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.1s" }}
+              ></div>
+              <div
+                className="w-3 h-3 bg-pink-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.2s" }}
+              ></div>
             </div>
           </div>
         </div>
@@ -117,7 +130,10 @@ const PreviewPage = () => {
           {/* Background decorative elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div
+              className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse"
+              style={{ animationDelay: "2s" }}
+            ></div>
           </div>
 
           <div className="relative z-10 max-w-md mx-auto text-center">
@@ -130,7 +146,8 @@ const PreviewPage = () => {
                 No Portfolio Found
               </h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Create your first stunning portfolio to showcase your professional journey and achievements.
+                Create your first stunning portfolio to showcase your
+                professional journey and achievements.
               </p>
 
               <Link
@@ -138,8 +155,18 @@ const PreviewPage = () => {
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
                 <span>Start Building</span>
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <svg
+                  className="ml-2 w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </Link>
             </div>
@@ -155,8 +182,14 @@ const PreviewPage = () => {
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+          <div
+            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: "2s" }}
+          ></div>
+          <div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: "4s" }}
+          ></div>
         </div>
 
         {/* Header */}
@@ -171,7 +204,9 @@ const PreviewPage = () => {
                   <div className="p-2 rounded-full bg-indigo-100 group-hover:bg-indigo-200 transition-colors duration-300">
                     <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-sm sm:text-base font-medium">Back to Builder</span>
+                  <span className="text-sm sm:text-base font-medium">
+                    Back to Builder
+                  </span>
                 </Link>
                 <div className="h-6 w-px bg-gray-300"></div>
                 <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -180,7 +215,9 @@ const PreviewPage = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-xs sm:text-sm text-gray-600 font-medium">Live Preview</span>
+                <span className="text-xs sm:text-sm text-gray-600 font-medium">
+                  Live Preview
+                </span>
               </div>
             </div>
           </div>
@@ -193,9 +230,12 @@ const PreviewPage = () => {
             <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white overflow-hidden">
               {/* Hero background pattern */}
               <div className="absolute inset-0 opacity-10">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                }}></div>
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }}
+                ></div>
               </div>
 
               <div className="relative z-10 py-16 sm:py-20 lg:py-24 px-6 sm:px-8 lg:px-12">
@@ -255,8 +295,14 @@ const PreviewPage = () => {
                   <div className="mt-8 sm:mt-10 flex justify-center">
                     <div className="flex space-x-2">
                       <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div
+                        className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.1s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-white/60 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -267,7 +313,6 @@ const PreviewPage = () => {
             <div className="relative p-6 sm:p-8 lg:p-12 space-y-12 sm:space-y-16 lg:space-y-20">
               {/* Section divider */}
               <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-px h-16 bg-gradient-to-b from-indigo-200 to-transparent"></div>
-
               {/* Experience Section */}
               {portfolioData.experiences &&
                 portfolioData.experiences.length > 0 && (
@@ -280,13 +325,13 @@ const PreviewPage = () => {
                       theme={{
                         primary: "text-indigo-600",
                         secondary: "text-slate-600",
-                        accent: "bg-gradient-to-r from-indigo-500 to-purple-500",
+                        accent:
+                          "bg-gradient-to-r from-indigo-500 to-purple-500",
                         gradient: "from-indigo-500 to-purple-500",
                       }}
                     />
                   </div>
                 )}
-
               {/* Projects Section */}
               {portfolioData.projects && portfolioData.projects.length > 0 && (
                 <div className="relative">
@@ -304,7 +349,6 @@ const PreviewPage = () => {
                   />
                 </div>
               )}
-
               {/* Education Section */}
               {portfolioData.education &&
                 portfolioData.education.length > 0 && (
@@ -323,7 +367,6 @@ const PreviewPage = () => {
                     />
                   </div>
                 )}
-
               {/* Skills Section */}
               {portfolioData.skills && portfolioData.skills.length > 0 && (
                 <div className="relative">
@@ -342,9 +385,48 @@ const PreviewPage = () => {
                 </div>
               )}
 
+              {/* Contact Info */}
+              <div className="p-6 bg-gradient-to-br from-white/90 to-slate-50 rounded-2xl shadow-lg border border-slate-100 hover:shadow-xl transition-shadow duration-300">
+                <h2 className="text-xl font-semibold mb-5 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Contact
+                  </span>
+                </h2>
+                <div className="space-y-4 text-gray-700 flex items-center gap-5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-full">
+                      <Mail className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <span className="text-sm sm:text-base">
+                      {portfolioData?.personalInfo?.email || "Not provided"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-green-100 rounded-full">
+                      <Phone className="w-5 h-5 text-green-600" />
+                    </div>
+                    <span className="text-sm sm:text-base">
+                      {portfolioData?.personalInfo?.contactInfo?.phone ||
+                        "Not provided"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-red-100 rounded-full">
+                      <MapPin className="w-5 h-5 text-red-600" />
+                    </div>
+                    <span className="text-sm sm:text-base">
+                      {portfolioData?.personalInfo?.contactInfo?.address ||
+                        "Not provided"}
+                    </span>
+                  </div>
+                </div>
+              </div>
               {/* Footer */}
               <div className="text-center pt-8 border-t border-gray-200">
-                <p className="text-gray-600 text-sm mb-2">Built with ❤️ using Instant Portfolio</p>
+                <p className="text-gray-600 text-sm mb-2">
+                  Built with ❤️ using Instant Portfolio
+                </p>
                 <div className="flex justify-center space-x-4 text-xs text-gray-500">
                   <span>• Professional • Modern • Responsive •</span>
                 </div>
